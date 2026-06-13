@@ -7,6 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import swiss.avm.poschti.data.local.dao.ProductDao
 import swiss.avm.poschti.data.local.dao.RecipeDao
+import swiss.avm.poschti.data.local.dao.ShoppingDao
+import swiss.avm.poschti.data.local.dao.WeekPlanDao
 import swiss.avm.poschti.data.local.entity.ProductEntity
 import swiss.avm.poschti.data.local.entity.RecipeEntity
 import swiss.avm.poschti.data.local.entity.RecipeIngredientEntity
@@ -33,6 +35,8 @@ abstract class PoschtiDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDao
     abstract fun recipeDao(): RecipeDao
+    abstract fun weekPlanDao(): WeekPlanDao
+    abstract fun shoppingDao(): ShoppingDao
 
     companion object {
         @Volatile

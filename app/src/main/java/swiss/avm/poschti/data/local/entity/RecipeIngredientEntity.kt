@@ -33,7 +33,10 @@ data class RecipeIngredientEntity(
     val id: Long = 0,
     val recipeId: Long,
     val productId: Long? = null,
+    /** Originaltext der Zutat (z.B. "200 g Mehl"). */
     val rawText: String,
+    /** Bereinigter Name für Konsolidierung (z.B. "Mehl"). */
+    val name: String = "",
     val quantity: Double? = null,
     val unit: MeasureUnit = MeasureUnit.NACH_BEDARF,
     /** Reihenfolge innerhalb des Rezepts. */

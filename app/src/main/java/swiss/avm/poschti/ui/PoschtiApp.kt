@@ -19,6 +19,8 @@ import androidx.navigation.compose.rememberNavController
 import swiss.avm.poschti.ui.navigation.PoschtiDestination
 import swiss.avm.poschti.ui.products.ProductsScreen
 import swiss.avm.poschti.ui.recipes.RecipesScreen
+import swiss.avm.poschti.ui.shopping.ShoppingScreen
+import swiss.avm.poschti.ui.week.WeekScreen
 
 @Composable
 fun PoschtiApp() {
@@ -55,16 +57,18 @@ fun PoschtiApp() {
             composable(PoschtiDestination.PRODUCTS.route) { ProductsScreen() }
             composable(PoschtiDestination.RECIPES.route) { RecipesScreen() }
             composable(PoschtiDestination.WEEK.route) {
-                PlaceholderScreen(
-                    title = "Wochenplanung",
-                    subtitle = "Hier wählst du bald Rezepte für die Woche aus (Phase 2).",
+                WeekScreen(
+                    onListGenerated = {
+                        navController.navigate(PoschtiDestination.LIST.route) {
+                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
                 )
             }
             composable(PoschtiDestination.LIST.route) {
-                PlaceholderScreen(
-                    title = "Einkaufsliste",
-                    subtitle = "Hier entsteht bald die konsolidierte Liste mit Einkaufsmodus (Phase 2).",
-                )
+                ShoppingScreen()
             }
         }
     }

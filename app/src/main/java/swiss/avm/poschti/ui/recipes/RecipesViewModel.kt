@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import swiss.avm.poschti.data.local.entity.RecipeEntity
 import swiss.avm.poschti.data.local.entity.RecipeIngredientEntity
-import swiss.avm.poschti.data.model.MeasureUnit
 import swiss.avm.poschti.data.repository.PoschtiRepository
+import swiss.avm.poschti.data.util.IngredientParser
 import swiss.avm.poschti.ui.AppViewModel
 
 data class RecipesUiState(
@@ -24,8 +24,9 @@ class RecipesViewModel(repository: PoschtiRepository) : AppViewModel(repository)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), RecipesUiState())
 
     /**
-     * Legt ein eigenes Rezept an. [ingredientLines] sind reine Textzeilen
-     * (eine Zutat pro Zeile); das Mengen-/Produkt-Mapping folgt in Phase 1.5.
+     * Legt ein eigenes Rezept an. [ingredientLines] sind Textzeilen
+     * (eine Zutat pro Zeile), z.B. "200 g Mehl". Sie werden via
+     * [IngredientParser] in Menge/Einheit/Name zerlegt.
      */
     fun addRecipe(name: String, servings: Int, ingredientLines: List<String>) {
         val trimmed = name.trim()
@@ -34,10 +35,13 @@ class RecipesViewModel(repository: PoschtiRepository) : AppViewModel(repository)
             .map { it.trim() }
             .filter { it.isNotEmpty() }
             .mapIndexed { index, line ->
+                val parsed = IngredientParser.parse(line)
                 RecipeIngredientEntity(
                     recipeId = 0,
                     rawText = line,
-                    unit = MeasureUnit.NACH_BEDARF,
+                    name = parsed.name,
+                    quantity = parsed.quantity,
+                    unit = parsed.unit,
                     position = index,
                 )
             }
