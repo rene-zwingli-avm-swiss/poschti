@@ -15,7 +15,7 @@ abstract class AppViewModel(protected val repository: PoschtiRepository) : ViewM
  * Baut eine ViewModel-Factory aus einer Funktion, die das Repository erhält.
  * Verwendung: `viewModel(factory = appViewModelFactory { ProductsViewModel(it) })`
  */
-inline fun <VM : ViewModel> appViewModelFactory(
+inline fun <reified VM : ViewModel> appViewModelFactory(
     crossinline create: (PoschtiRepository) -> VM,
 ): ViewModelProvider.Factory = viewModelFactory {
     initializer {
