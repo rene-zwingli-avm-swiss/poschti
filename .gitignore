@@ -4,6 +4,9 @@ build/
 captures/
 .cxx/
 
+# Heruntergeladene Build-Artefakte (APKs)
+dist/
+
 # Android Studio / IntelliJ
 *.iml
 .idea/
